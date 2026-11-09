@@ -7,7 +7,7 @@ summary: Numa pergunta sem resposta possível, o modelo ofereceu uma receita sem
 tags: [agentes, alucinação, DuckDB, avaliação]
 ---
 
-**Contexto:** o [agente de planilhas](@root/portfolio/agente-de-planilhas.html) recebe um CSV ou XLSX, converte para Parquet, carrega no DuckDB e deixa o modelo escrever SQL de leitura para responder. Avaliei com o Gemini Flash-Lite: 10 perguntas, cada uma com gabarito calculado em pandas.
+**Contexto:** o [agente de planilhas](@root/portfolio/agente-de-planilhas/index.html) recebe um CSV ou XLSX, converte para Parquet, carrega no DuckDB e deixa o modelo escrever SQL de leitura para responder. Avaliei com o Gemini Flash-Lite: 10 perguntas, cada uma com gabarito calculado em pandas.
 
 ## O que aconteceu
 

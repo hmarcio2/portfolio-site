@@ -13,6 +13,6 @@
   {% if e.tags %}
   <ul class="tags">{% for t in e.tags %}<li>{{ t }}</li>{% endfor %}</ul>
   {% endif %}
-  <time class="date" datetime="{{ e.date.isoformat() }}">{{ e.date|date_pt }}</time>
+  <time class="date" datetime="{{ e.date.isoformat() }}">{{ e.date|date_pt }}{% if e.folder %} · {{ e.pages }} páginas de documentação{% endif %}</time>
 </article>
 {% endmacro %}

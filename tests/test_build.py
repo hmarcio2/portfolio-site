@@ -84,17 +84,18 @@ def test_real_content_links_only_to_published_repositories(tmp_path):
     """Todo link para um repositório do portfólio tem de ser de um repositório que de fato existe no GitHub."""
     build.build_site(ROOT, tmp_path)
     for page in tmp_path.rglob("*.html"):
-        for name in re.findall(r"github\.com/hmarcio2/([A-Za-z0-9_.-]+)", page.read_text(encoding="utf-8")):
+        for name in re.findall(r"github\.com/hmarcio2/([A-Za-z0-9_-]+)", page.read_text(encoding="utf-8")):
             if name.startswith("portfolio-"):
                 assert name in PUBLISHED_REPOS, f"{page.name}: repositório inexistente {name}"
 
 
-def test_every_portfolio_page_with_a_repository_shows_the_github_button(tmp_path):
+def test_every_project_page_shows_the_github_button(tmp_path):
+    """Todas as páginas de documentação de um projeto (visão geral e subpáginas) têm o botão do repositório."""
     build.build_site(ROOT, tmp_path)
-    for page in (tmp_path / "portfolio").glob("*.html"):
-        if page.name in {"index.html", "roadmap.html"} or page.name.startswith("pagina-") or "categoria" in str(page):
-            continue
-        assert "Código no GitHub" in page.read_text(encoding="utf-8"), page.name
+    pages = [p for p in (tmp_path / "portfolio").glob("*/*.html") if p.parent.name != "categoria"]
+    assert pages, "nenhuma página de projeto gerada"
+    for page in pages:
+        assert "Código no GitHub" in page.read_text(encoding="utf-8"), str(page.relative_to(tmp_path))
 
 
 # ---------- ordenação e paginação ----------

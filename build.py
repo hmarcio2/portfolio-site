@@ -7,6 +7,9 @@ Lê o conteúdo em Markdown (``content/``), aplica os templates (``templates/``)
     content/estudos/*.md                       -> estudos/index.html (cards paginados, do mais recente ao mais antigo),
                                                   uma página por estudo, e uma página por categoria
     content/portfolio/*.md                     -> portfolio/index.html (cards paginados) e uma página por projeto
+    content/portfolio/<projeto>/index.md       -> projeto com documentação em várias páginas: index.md é a visão geral
+    content/portfolio/<projeto>/<pagina>.md       e cada outro .md é uma página da documentação (``order`` define a ordem),
+                                                  com barra lateral própria do projeto
     content/roadmap.md                         -> portfolio/roadmap.html (projetos planejados)
 
 Cada ``.md`` começa com um cabeçalho YAML (title, date, category, summary...). Veja o README para escrever um estudo
@@ -33,6 +36,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ROOT = Path(__file__).resolve().parent
+OVERVIEW_LABEL = "Visão geral"
 MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"]
 SECTIONS = ("estudos", "portfolio")
 REQUIRED = ("title", "date", "category", "summary")
@@ -42,6 +46,25 @@ _SLUG = re.compile(r"^[a-z0-9][a-z0-9-]*$")
 
 class BuildError(Exception):
     """Conteúdo inválido; a mensagem diz qual arquivo e o que corrigir."""
+
+
+@dataclass
+class DocPage:
+    """Uma página da documentação de um projeto (content/portfolio/<projeto>/<pagina>.md)."""
+    project: str
+    slug: str
+    title: str
+    order: int
+    summary: str
+    body: str
+
+    @property
+    def path(self) -> str:
+        return f"portfolio/{self.project}/{self.slug}.html"
+
+    @property
+    def minutes(self) -> int:
+        return max(1, math.ceil(len(self.body.split()) / 200))
 
 
 @dataclass
@@ -56,14 +79,21 @@ class Entry:
     tags: list[str]
     body: str                      # Markdown (convertido para HTML na hora de gerar a página, com o prefixo certo)
     meta: dict[str, Any] = field(default_factory=dict)
+    docs: list[DocPage] = field(default_factory=list)   # só nos projetos em pasta
+    folder: bool = False
 
     @property
     def path(self) -> str:         # caminho relativo à raiz do site
-        return f"{self.section}/{self.slug}.html"
+        return f"{self.section}/{self.slug}/index.html" if self.folder else f"{self.section}/{self.slug}.html"
 
     @property
     def minutes(self) -> int:
-        return max(1, math.ceil(len(self.body.split()) / 200))
+        words = len(self.body.split()) + sum(len(d.body.split()) for d in self.docs)
+        return max(1, math.ceil(words / 200))
+
+    @property
+    def pages(self) -> int:        # visão geral + páginas de documentação
+        return 1 + len(self.docs)
 
 
 # ---------- leitura ----------
@@ -92,25 +122,54 @@ def load_site(content: Path) -> dict:
     return cfg
 
 
+def load_docs(folder: Path, project: str, section: str) -> list[DocPage]:
+    docs: list[DocPage] = []
+    for path in sorted(folder.glob("*.md")):
+        if path.name.startswith("_") or path.name == "index.md":
+            continue
+        source = f"content/{section}/{project}/{path.name}"
+        meta, body = split_front_matter(path.read_text(encoding="utf-8"), source)
+        if meta.pop("draft", False):
+            continue
+        if not meta.get("title"):
+            raise BuildError(f"{source}: falta o campo title")
+        if not _SLUG.match(path.stem):
+            raise BuildError(f"{source}: o nome do arquivo deve usar só letras minúsculas, números e hífens")
+        try:
+            order = int(meta.get("order", 100))
+        except (TypeError, ValueError):
+            raise BuildError(f"{source}: 'order' deve ser um número inteiro") from None
+        docs.append(DocPage(project, path.stem, str(meta["title"]), order, str(meta.get("summary", "")).strip(), body))
+    return sorted(docs, key=lambda d: (d.order, d.slug))
+
+
 def load_entries(content: Path, section: str, categories: list[dict]) -> list[Entry]:
     valid = {c["slug"] for c in categories}
     entries: list[Entry] = []
     seen: set[str] = set()
-    for path in sorted((content / section).glob("*.md")):
+    base = content / section
+    candidates = [p for p in sorted(base.glob("*.md"))] + [p for p in sorted(base.iterdir()) if p.is_dir()]
+    for path in candidates:
         if path.name.startswith("_"):
             continue
-        source = f"content/{section}/{path.name}"
-        meta, body = split_front_matter(path.read_text(encoding="utf-8"), source)
+        folder = path.is_dir()
+        if folder and section != "portfolio":
+            raise BuildError(f"content/{section}/{path.name}: pastas com várias páginas só existem no portfólio")
+        slug = path.name if folder else path.stem
+        index = path / "index.md" if folder else path
+        source = f"content/{section}/{path.name}" + ("/index.md" if folder else "")
+        if not index.is_file():
+            raise BuildError(f"{source}: a pasta de um projeto precisa de um index.md (a visão geral)")
+        meta, body = split_front_matter(index.read_text(encoding="utf-8"), source)
         if meta.pop("draft", False):
             continue
         missing = [k for k in REQUIRED if not meta.get(k)]
         if missing:
             raise BuildError(f"{source}: faltam os campos {', '.join(missing)}")
-        slug = path.stem
         if not _SLUG.match(slug):
             raise BuildError(f"{source}: o nome do arquivo deve usar só letras minúsculas, números e hífens")
         if slug in seen:
-            raise BuildError(f"{source}: nome repetido na seção {section}")
+            raise BuildError(f"{source}: nome repetido na seção {section} (arquivo e pasta com o mesmo nome?)")
         seen.add(slug)
         if meta["category"] not in valid:
             raise BuildError(f"{source}: categoria '{meta['category']}' não existe (use uma de: {', '.join(sorted(valid))})")
@@ -121,6 +180,7 @@ def load_entries(content: Path, section: str, categories: list[dict]) -> list[En
             section=section, slug=slug, title=str(meta["title"]), date=d, seq=int(meta.get("seq", 0)),
             category=meta["category"], summary=str(meta["summary"]).strip(), tags=list(meta.get("tags") or []), body=body,
             meta={k: v for k, v in meta.items() if k not in {"title", "date", "seq", "category", "summary", "tags"}},
+            docs=load_docs(path, slug, section) if folder else [], folder=folder,
         ))
     return sort_newest_first(entries)
 
@@ -163,8 +223,17 @@ class Builder:
 
     # -- utilidades --
     def md(self, text: str, root: str) -> str:
-        html = markdown.markdown(text, extensions=["tables", "fenced_code", "toc", "sane_lists"], output_format="html")
-        return html.replace("@root/", root)  # links internos no Markdown: [texto](@root/portfolio/chat.html)
+        return self.md_toc(text, root)[0]
+
+    def md_toc(self, text: str, root: str) -> tuple[str, list[dict]]:
+        """HTML da página e o sumário ("nesta página": os títulos ``##`` com os ``###`` dentro de cada um)."""
+        converter = markdown.Markdown(extensions=["tables", "fenced_code", "toc", "sane_lists"],
+                                      extension_configs={"toc": {"toc_depth": "2-3"}}, output_format="html")
+        html = converter.convert(text)
+        toc = [{"id": t["id"], "name": t["name"], "children": [{"id": c["id"], "name": c["name"]} for c in t["children"]]}
+               for t in converter.toc_tokens]
+        # links internos no Markdown: [texto](@root/portfolio/chat/index.html)
+        return html.replace("@root/", root), toc
 
     def render(self, template: str, path: str, **ctx: Any) -> None:
         depth = path.count("/")
@@ -203,7 +272,7 @@ class Builder:
         for section in SECTIONS:
             self.listings(section)
             for e in self.entries[section]:
-                self.entry_page(e)
+                self.project_pages(e) if e.folder else self.entry_page(e)
         self.roadmap()
         return self.written
 
@@ -255,6 +324,33 @@ class Builder:
             newer=ordered[i - 1] if i > 0 else None, older=ordered[i + 1] if i + 1 < len(ordered) else None,
             sidebar=self.sidebar(e.section, entry=e), section_title=self.cfg["section_titles"][e.section],
         )
+
+    def project_sidebar(self, e: Entry, current: DocPage | None) -> dict:
+        """Barra lateral de um projeto em pasta: as páginas da documentação dele, em ordem."""
+        pages = [{"title": d.title, "url": d.path, "current": current is d} for d in e.docs]
+        return {"section": "portfolio", "title": e.title, "home_url": e.path, "home_label": OVERVIEW_LABEL,
+                "groups": [], "extra": pages, "current_home": current is None, "back": {
+                    "title": "Todos os projetos", "url": list_path("portfolio", 1)}}
+
+    def project_pages(self, e: Entry) -> None:
+        """Visão geral (index.md) e cada página da documentação de um projeto em pasta."""
+        ordered = self.entries[e.section]
+        i = ordered.index(e)
+        sequence: list[tuple[str, str, DocPage | None]] = [(OVERVIEW_LABEL, e.path, None)] + [(d.title, d.path, d) for d in e.docs]
+        for n, (title, path, doc) in enumerate(sequence):
+            depth_root = "../" * path.count("/")
+            body = e.body if doc is None else doc.body
+            html, toc = self.md_toc(body, depth_root)
+            self.render(
+                "project.html", path, section="portfolio", title=e.title if doc is None else f"{title} · {e.title}",
+                description=e.summary if doc is None else (doc.summary or e.summary), entry=e, doc=doc, page_title=e.title if doc is None else title,
+                body=html, toc=toc if len(toc) >= 3 else [], category_name=self.cat_name(e.section, e.category),
+                category_url=list_path(e.section, 1, e.category), section_title=self.cfg["section_titles"][e.section],
+                prev_page=({"title": sequence[n - 1][0], "url": sequence[n - 1][1]} if n > 0 else None),
+                next_page=({"title": sequence[n + 1][0], "url": sequence[n + 1][1]} if n + 1 < len(sequence) else None),
+                sidebar=self.project_sidebar(e, doc), reading_minutes=(e.minutes if doc is None else doc.minutes),
+                newer=ordered[i - 1] if i > 0 and doc is None else None, older=ordered[i + 1] if i + 1 < len(ordered) and doc is None else None,
+            )
 
     def roadmap(self) -> None:
         path = self.content / "roadmap.md"

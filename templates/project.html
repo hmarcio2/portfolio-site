@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="with-side">
+  {% include "_sidebar.html" %}
+  <article class="main-col prose-wrap">
+    <p class="crumbs">
+      <a href="{{ root }}{{ sidebar.back.url }}">{{ section_title }}</a> › <a href="{{ root }}{{ category_url }}">{{ category_name }}</a>
+      {% if doc %} › <a href="{{ root }}{{ entry.path }}">{{ entry.title }}</a>{% endif %}
+    </p>
+    <h1 class="page-title">{{ page_title }}</h1>
+    <p class="entry-meta muted">
+      {% if entry.meta.status %}<span class="badge {{ entry.meta.status }}">{{ site.status_labels[entry.meta.status] }}</span> · {% endif %}
+      <time datetime="{{ entry.date.isoformat() }}">{{ entry.date|date_pt }}</time> · {{ reading_minutes }} min de leitura{% if not doc %} · {{ entry.pages }} páginas de documentação{% endif %}
+    </p>
+    {% if not doc and entry.tags %}<ul class="tags">{% for t in entry.tags %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+    <p class="project-links">
+      {% if entry.meta.demo %}<a class="btn primary" href="{{ entry.meta.demo }}" target="_blank" rel="noopener noreferrer">Demo</a>{% endif %}
+      {% if entry.meta.repo %}<a class="btn" href="{{ entry.meta.repo }}" target="_blank" rel="noopener noreferrer">Código no GitHub</a>
+      {% else %}<span class="btn off">Repositório a publicar</span>{% endif %}
+    </p>
+    {% if toc %}
+    <nav class="toc" aria-label="Nesta página">
+      <p class="toc-title">Nesta página</p>
+      <ul>
+        {% for h in toc %}
+        <li><a href="#{{ h.id }}">{{ h.name }}</a>{% if h.children %}
+          <ul>{% for c in h.children %}<li><a href="#{{ c.id }}">{{ c.name }}</a></li>{% endfor %}</ul>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </nav>
+    {% endif %}
+    <div class="prose">{{ body|safe }}</div>
+    {% if not doc and entry.docs %}
+    <section class="doc-list" aria-label="Documentação completa">
+      <h2>Documentação completa</h2>
+      <ol>
+        {% for d in entry.docs %}
+        <li><a href="{{ root }}{{ d.path }}">{{ d.title }}</a>{% if d.summary %}<span class="muted"> · {{ d.summary }}</span>{% endif %}</li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% endif %}
+    <nav class="prev-next" aria-label="Páginas da documentação">
+      {% if prev_page %}<a href="{{ root }}{{ prev_page.url }}" rel="prev"><span class="muted">← Anterior</span><br>{{ prev_page.title }}</a>{% else %}<span></span>{% endif %}
+      {% if next_page %}<a class="right" href="{{ root }}{{ next_page.url }}" rel="next"><span class="muted">Próxima →</span><br>{{ next_page.title }}</a>{% endif %}
+    </nav>
+  </article>
+</div>
+{% endblock %}

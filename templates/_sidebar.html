@@ -1,8 +1,9 @@
 <aside class="side">
   <nav aria-label="{{ sidebar.title }}">
+    {% if sidebar.back %}<p class="side-back"><a href="{{ root }}{{ sidebar.back.url }}">← {{ sidebar.back.title }}</a></p>{% endif %}
     <p class="side-title">{{ sidebar.title }}</p>
     <ul class="side-top">
-      <li><a href="{{ root }}{{ sidebar.home_url }}"{% if sidebar.current_home %} aria-current="page"{% endif %}>{{ site.side_all[sidebar.section] }}</a></li>
+      <li><a href="{{ root }}{{ sidebar.home_url }}"{% if sidebar.current_home %} aria-current="page"{% endif %}>{{ sidebar.home_label or site.side_all[sidebar.section] }}</a></li>
       {% for x in sidebar.extra %}
       <li><a href="{{ root }}{{ x.url }}"{% if x.current %} aria-current="page"{% endif %}>{{ x.title }}</a></li>
       {% endfor %}

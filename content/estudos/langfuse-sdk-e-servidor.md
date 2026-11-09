@@ -7,7 +7,7 @@ summary: Ao subir o Langfuse de verdade, os traces chegaram mas as notas não, e
 tags: [Langfuse, Docker, observabilidade, depuração]
 ---
 
-**Contexto:** até aqui, a instrumentação do [chat](@root/portfolio/chat-do-portfolio.html), do [recomendador](@root/portfolio/recomendador-de-filmes.html) e do [analista de planilhas](@root/portfolio/agente-de-planilhas.html) só tinha sido testada com um exportador em memória. Ao subir o [Langfuse](@root/portfolio/observabilidade-langfuse.html) de verdade, dois defeitos apareceram, e nenhum deles aparecia nos testes automáticos.
+**Contexto:** até aqui, a instrumentação do [chat](@root/portfolio/chat-do-portfolio/index.html), do [recomendador](@root/portfolio/recomendador-de-filmes/index.html) e do [analista de planilhas](@root/portfolio/agente-de-planilhas/index.html) só tinha sido testada com um exportador em memória. Ao subir o [Langfuse](@root/portfolio/observabilidade-langfuse/index.html) de verdade, dois defeitos apareceram, e nenhum deles aparecia nos testes automáticos.
 
 ## 1. Os traces chegavam, as notas não
 

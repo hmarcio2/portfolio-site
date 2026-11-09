@@ -7,7 +7,7 @@ summary: Traces, notas automáticas e feedback do visitante no chat do portfóli
 tags: [observabilidade, Langfuse, guardrails, RAG]
 ---
 
-**Contexto:** o [chat do portfólio](@root/portfolio/chat-do-portfolio.html) envia cada turno ao Langfuse. A pergunta que guiou o desenho: *o que eu precisaria ver, no painel, para saber se o assistente está funcionando?*
+**Contexto:** o [chat do portfólio](@root/portfolio/chat-do-portfolio/index.html) envia cada turno ao Langfuse. A pergunta que guiou o desenho: *o que eu precisaria ver, no painel, para saber se o assistente está funcionando?*
 
 ## O que cada turno registra
 
@@ -39,4 +39,4 @@ O `knowledge_gap` disparava numa resposta correta que, no segundo parágrafo, av
 
 ## O que ainda não está provado
 
-Estas 8 conversas foram exportadas do pipeline real antes de eu ter um servidor; o visualizador estático em `docs/observabilidade/` mostra o que o servidor receberia. Depois subi um Langfuse local e confirmei o envio com um teste de fumaça (3 observações e 8 notas chegaram), o que revelou dois problemas: veja [Langfuse: o servidor precisa ser tão novo quanto o SDK](@root/estudos/langfuse-sdk-e-servidor.html). **Ainda faltam** prints da interface e tráfego real; os painéis não foram montados. Mais em [Langfuse self-hosted](@root/portfolio/observabilidade-langfuse.html).
+Estas 8 conversas foram exportadas do pipeline real antes de eu ter um servidor; o visualizador estático em `docs/observabilidade/` mostra o que o servidor receberia. Depois subi um Langfuse local e confirmei o envio com um teste de fumaça (3 observações e 8 notas chegaram), o que revelou dois problemas: veja [Langfuse: o servidor precisa ser tão novo quanto o SDK](@root/estudos/langfuse-sdk-e-servidor.html). **Ainda faltam** prints da interface e tráfego real; os painéis não foram montados. Mais em [Langfuse self-hosted](@root/portfolio/observabilidade-langfuse/index.html).

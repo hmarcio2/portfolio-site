@@ -7,7 +7,7 @@ summary: Medi vetorial, BM25 e híbrida com três embedders. Com o embedder mult
 tags: [busca híbrida, avaliação, Qdrant, RRF]
 ---
 
-**Contexto:** o [recomendador de filmes](@root/portfolio/recomendador-de-filmes.html) busca por descrição ("suspense psicológico, mas mais leve") num catálogo de 44 filmes, com Qdrant (vetorial) e BM25, combinados por RRF. Minha primeira versão do README dizia que a híbrida superava cada busca isolada. Medi antes de manter a frase.
+**Contexto:** o [recomendador de filmes](@root/portfolio/recomendador-de-filmes/index.html) busca por descrição ("suspense psicológico, mas mais leve") num catálogo de 44 filmes, com Qdrant (vetorial) e BM25, combinados por RRF. Minha primeira versão do README dizia que a híbrida superava cada busca isolada. Medi antes de manter a frase.
 
 ## Como medi
 

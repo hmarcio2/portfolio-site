@@ -33,7 +33,7 @@ com `k` em torno de 60 (veja o [resumo do paper](@root/estudos/paper-reciprocal-
 
 ## O que medi
 
-- No [chat do portfólio](@root/portfolio/chat-do-portfolio.html), com 49 trechos, BM25 e embeddings empataram no que importa (o trecho certo entre os 5 enviados ao modelo). Fiquei com o BM25, porque ele não custa nada.
-- No [recomendador de filmes](@root/portfolio/recomendador-de-filmes.html), a melhor estratégia **dependeu do embedder**: veja [Busca híbrida: o peso do BM25 depende do embedder](@root/estudos/busca-hibrida-peso-do-bm25.html).
+- No [chat do portfólio](@root/portfolio/chat-do-portfolio/index.html), com 49 trechos, BM25 e embeddings empataram no que importa (o trecho certo entre os 5 enviados ao modelo). Fiquei com o BM25, porque ele não custa nada.
+- No [recomendador de filmes](@root/portfolio/recomendador-de-filmes/index.html), a melhor estratégia **dependeu do embedder**: veja [Busca híbrida: o peso do BM25 depende do embedder](@root/estudos/busca-hibrida-peso-do-bm25.html).
 
 A regra que tiro disso: não escolha a arquitetura de busca por moda. Escreva perguntas de teste, meça o acerto e só então adicione peças.

@@ -29,7 +29,7 @@ Em tarefas de perguntas e respostas com busca, verificação de fatos e ambiente
 
 ## Como aparece nos meus projetos
 
-- No [agente de planilhas](@root/portfolio/agente-de-planilhas.html) e no [recomendador de filmes](@root/portfolio/recomendador-de-filmes.html), o loop é o ReAct em sua forma moderna: o modelo recebe a descrição das ferramentas por **tool use** da API (em vez de texto livre "Ação:"), executa, recebe a observação e decide o próximo passo, com teto de passos.
+- No [agente de planilhas](@root/portfolio/agente-de-planilhas/index.html) e no [recomendador de filmes](@root/portfolio/recomendador-de-filmes/index.html), o loop é o ReAct em sua forma moderna: o modelo recebe a descrição das ferramentas por **tool use** da API (em vez de texto livre "Ação:"), executa, recebe a observação e decide o próximo passo, com teto de passos.
 - O erro de uma ferramenta volta ao modelo como observação (`is_error`), para ele se corrigir. É o "tratar exceções" do paper.
 
 ## Limites a lembrar

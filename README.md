@@ -48,6 +48,30 @@ demo: https://chat.seudominio.com.br                 # idem
 Texto em Markdown. Para ligar a outra página: [Chat](@root/portfolio/chat-do-portfolio.html)
 ```
 3. `python build.py` (ou `.\dev.ps1`) e confira. Erro de conteúdo (campo faltando, categoria inexistente, data inválida) para a geração e diz qual arquivo corrigir. A home, as listagens, a paginação, as categorias e a barra lateral se atualizam sozinhas; categoria sem textos não aparece.
+### Documentar um projeto em várias páginas
+
+Um projeto do portfólio pode ser uma **pasta**, com a documentação dividida em páginas e uma barra lateral própria:
+
+```
+content/portfolio/meu-projeto/
+├─ index.md          # a visão geral: leva o cabeçalho completo (title, date, category, status, repo, summary, tags)
+├─ arquitetura.md    # cada outro .md é uma página da documentação
+└─ avaliacao.md
+```
+
+```markdown
+---
+title: Arquitetura
+order: 1                 # ordem na barra lateral (depois, o nome do arquivo)
+summary: Uma frase; aparece na lista "Documentação completa" da visão geral.
+---
+## Primeiro título
+Corpo em Markdown. Com 3 ou mais títulos `##`, a página ganha o sumário "Nesta página".
+Link para outra página do projeto: [avaliação](@root/portfolio/meu-projeto/avaliacao.html)
+```
+
+O card do projeto passa a mostrar "N páginas de documentação". Um projeto continua podendo ser um arquivo só (`content/portfolio/meu-projeto.md`).
+
 4. Nova categoria: acrescente em `categories` no `content/site.yml`. Quando um projeto planejado sair do `content/roadmap.md`, crie a página dele.
 
 `python -m pytest` (na raiz do workspace) testa o gerador e confere que todos os links internos do site real resolvem.

@@ -29,7 +29,7 @@ Que esse método simples, sem treino, supera métodos de fusão mais elaborados 
 
 ## Uso nos meus projetos
 
-O [recomendador de filmes](@root/portfolio/recomendador-de-filmes.html) combina vetor e BM25 por RRF, com um **peso por lista**. O paper não trata de pesos; essa é uma extensão minha, calibrada por medição. O resultado mostrou que o peso certo depende do embedder: veja [a análise](@root/estudos/busca-hibrida-peso-do-bm25.html).
+O [recomendador de filmes](@root/portfolio/recomendador-de-filmes/index.html) combina vetor e BM25 por RRF, com um **peso por lista**. O paper não trata de pesos; essa é uma extensão minha, calibrada por medição. O resultado mostrou que o peso certo depende do embedder: veja [a análise](@root/estudos/busca-hibrida-peso-do-bm25.html).
 
 ## Limites
 
