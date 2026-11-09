@@ -38,6 +38,8 @@ A biblioteca comum tem 51 testes; os apps têm 75 (chat), 66 (filmes) e 97 (plan
 
 ## Estado e limites
 
-- Os repositórios estão publicados no GitHub (core, chat, filmes, planilhas, site, edge e langfuse), mas **nada foi publicado numa VPS ainda**, e as imagens Docker dos apps e do site ainda não foram construídas e executadas. Só o Langfuse foi levantado de verdade, localmente (com dois defeitos encontrados e corrigidos).
+- Os repositórios estão publicados no GitHub (core, chat, filmes, planilhas, site, edge e langfuse), mas **nada foi publicado numa VPS ainda**.
+- **As imagens foram construídas e executadas localmente** (site 48 MB; chat 271 MB; filmes 354 MB; planilhas 476 MB), com as restrições do compose de produção: sistema de arquivos somente leitura, `cap_drop ALL`, `no-new-privileges`, limite de memória e usuário sem privilégios. Os quatro ficaram `healthy`, responderam em `/health` e atenderam as rotas principais (o chat e o recomendador sem LLM, no modo offline; o upload de planilha passou por pandas, Parquet e DuckDB). Em repouso: chat 108 MiB, filmes 217 MiB (321 MiB com os 5000 filmes do CMU) e planilhas 170 MiB, dentro dos tetos de 512, 768 e 1024 MiB. O Langfuse também foi levantado de verdade (com dois defeitos encontrados e corrigidos).
+- **Não testado:** o build no CI do GitHub (a conta está com um bloqueio de cobrança), o pull das imagens do GHCR e o deploy por SSH.
 - Ordem de publicação seguida: `portfolio-core` (tag `v0.3.0`) primeiro, depois os apps. O botão "Código no GitHub" desta página aponta para o `portfolio-edge`; os outros repositórios estão na tabela acima.
 - Backups, retenção de dados e monitoramento da VPS ainda precisam ser configurados.
