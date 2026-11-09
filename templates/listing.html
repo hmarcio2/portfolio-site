@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block content %}
+<div class="with-side">
+  {% include "_sidebar.html" %}
+  <div class="main-col">
+    <h1 class="page-title">{{ heading }}</h1>
+    {% if intro %}<p class="lead">{{ intro }}</p>{% endif %}
+    <p class="muted count-line">{{ total }} {{ site.noun[section][0] if total == 1 else site.noun[section][1] }}, do mais recente ao mais antigo.</p>
+    {% if cards %}
+    <div class="grid">
+      {% for e in cards %}{{ m.card(e, root) }}{% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">Ainda não há nada por aqui.</p>
+    {% endif %}
+    {% if pagination|length > 1 %}
+    <nav class="pager" aria-label="Paginação">
+      {% if prev_url %}<a class="btn" href="{{ root }}{{ prev_url }}" rel="prev">← Mais recentes</a>{% else %}<span class="btn off" aria-hidden="true">← Mais recentes</span>{% endif %}
+      <ol>
+        {% for p in pagination %}
+        <li><a href="{{ root }}{{ p.url }}"{% if p.current %} aria-current="page"{% endif %} aria-label="Página {{ p.n }}">{{ p.n }}</a></li>
+        {% endfor %}
+      </ol>
+      {% if next_url %}<a class="btn" href="{{ root }}{{ next_url }}" rel="next">Mais antigos →</a>{% else %}<span class="btn off" aria-hidden="true">Mais antigos →</span>{% endif %}
+    </nav>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

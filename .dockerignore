@@ -1,0 +1,7 @@
+# lista de permissão: só o que o estágio de build precisa
+*
+!requirements-build.txt
+!build.py
+!content
+!templates
+!assets

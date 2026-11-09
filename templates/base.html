@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% if path == "index.html" %}{{ title }}{% else %}{{ title }} · {{ site.short_name }}{% endif %}</title>
+<meta name="description" content="{{ description or site.description }}">
+<link rel="stylesheet" href="{{ root }}assets/style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="{{ root }}index.html" aria-label="Início">{{ site.initials }}</a>
+    <nav class="main-nav" aria-label="Principal">
+      {% for item in site.nav %}
+      <a href="{{ root }}{{ item.url }}"{% if item.section == section %} aria-current="page"{% endif %}>{{ item.label }}</a>
+      {% endfor %}
+    </nav>
+    <nav class="social" aria-label="Perfis">
+      <a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+{% block content %}{% endblock %}
+</main>
+
+<footer>
+  <p>{{ site.name }} · <a href="{{ site.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="{{ site.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></p>
+  <p class="muted">{{ site.footer_note }}</p>
+</footer>
+
+{% include "_chat.html" %}
+<script src="{{ root }}assets/chat.js"></script>
+</body>
+</html>

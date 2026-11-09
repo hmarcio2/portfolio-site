@@ -1,0 +1,18 @@
+{% macro card(e, root) %}
+<article class="card">
+  <div class="meta">
+    <a class="cat" href="{{ root }}{{ list_path(e.section, 1, e.category) }}">{{ cat_name(e.section, e.category) }}</a>
+    {% if e.meta.status %}
+    <span class="badge {{ e.meta.status }}">{{ site.status_labels[e.meta.status] }}</span>
+    {% else %}
+    <span>{{ e.minutes }} min de leitura</span>
+    {% endif %}
+  </div>
+  <h3><a class="stretch" href="{{ root }}{{ e.path }}">{{ e.title }}</a></h3>
+  <p>{{ e.summary }}</p>
+  {% if e.tags %}
+  <ul class="tags">{% for t in e.tags %}<li>{{ t }}</li>{% endfor %}</ul>
+  {% endif %}
+  <time class="date" datetime="{{ e.date.isoformat() }}">{{ e.date|date_pt }}</time>
+</article>
+{% endmacro %}

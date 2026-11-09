@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% import "_macros.html" as m with context %}
+{% block content %}
+<section class="hero">
+  <p class="eyebrow">{{ cv.headline }}</p>
+  <div class="prose about">{{ about|safe }}</div>
+  <p class="cta">
+    <button type="button" class="btn primary" id="open-chat">Pergunte ao assistente</button>
+    <a class="btn" href="{{ root }}portfolio/index.html">Ver projetos</a>
+    <a class="btn" href="{{ root }}estudos/index.html">Ler estudos</a>
+  </p>
+</section>
+
+<section id="curriculo" class="cv">
+  <h2>Resumo do currículo</h2>
+  <div class="cv-grid">
+    <div>
+      <h3>Experiência</h3>
+      <ul class="timeline">
+        {% for x in cv.experience %}
+        <li>
+          <strong>{{ x.role }}</strong> · {{ x.org }}
+          <span class="muted">{{ x.period }}</span>
+          <p>{{ x.summary }}</p>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div>
+      <h3>Formação</h3>
+      <ul class="timeline">
+        {% for x in cv.education %}
+        <li>
+          <strong>{{ x.course }}</strong> · {{ x.org }}
+          <span class="muted">{{ x.period }}</span>
+          {% if x.note %}<p>{{ x.note }}</p>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      <h3>Idiomas</h3>
+      <ul class="plain">{% for l in cv.languages %}<li>{{ l }}</li>{% endfor %}</ul>
+    </div>
+  </div>
+  <h3>Habilidades</h3>
+  <dl class="skills">
+    {% for g in cv.skills %}
+    <dt>{{ g.group }}</dt>
+    <dd><ul class="chips">{% for i in g["items"] %}<li>{{ i }}</li>{% endfor %}</ul></dd>
+    {% endfor %}
+  </dl>
+</section>
+
+<section id="ultimos-projetos">
+  <div class="section-head">
+    <h2>Últimos projetos</h2>
+    <a href="{{ root }}portfolio/index.html">Todos os projetos ({{ counts.portfolio }}) →</a>
+  </div>
+  <div class="grid">{% for e in latest_projects %}{{ m.card(e, root) }}{% endfor %}</div>
+</section>
+
+<section id="ultimos-estudos">
+  <div class="section-head">
+    <h2>Últimos estudos</h2>
+    <a href="{{ root }}estudos/index.html">Todos os estudos ({{ counts.estudos }}) →</a>
+  </div>
+  <div class="grid">{% for e in latest_studies %}{{ m.card(e, root) }}{% endfor %}</div>
+</section>
+{% endblock %}

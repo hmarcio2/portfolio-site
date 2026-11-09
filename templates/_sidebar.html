@@ -1,0 +1,22 @@
+<aside class="side">
+  <nav aria-label="{{ sidebar.title }}">
+    <p class="side-title">{{ sidebar.title }}</p>
+    <ul class="side-top">
+      <li><a href="{{ root }}{{ sidebar.home_url }}"{% if sidebar.current_home %} aria-current="page"{% endif %}>{{ site.side_all[sidebar.section] }}</a></li>
+      {% for x in sidebar.extra %}
+      <li><a href="{{ root }}{{ x.url }}"{% if x.current %} aria-current="page"{% endif %}>{{ x.title }}</a></li>
+      {% endfor %}
+    </ul>
+    {% for g in sidebar.groups %}
+    <details{% if g.open %} open{% endif %}>
+      <summary>{{ g.name }} <span class="count">{{ g.count }}</span></summary>
+      <ul>
+        <li><a class="cat-link" href="{{ root }}{{ g.url }}">Ver todos de {{ g.name }}</a></li>
+        {% for x in g.entries %}
+        <li><a href="{{ root }}{{ x.url }}"{% if x.current %} aria-current="page"{% endif %}>{{ x.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endfor %}
+  </nav>
+</aside>

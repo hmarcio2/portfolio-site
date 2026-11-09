@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="with-side">
+  {% include "_sidebar.html" %}
+  <article class="main-col prose-wrap">
+    <p class="crumbs"><a href="{{ root }}{{ sidebar.home_url }}">{{ section_title }}</a> › <a href="{{ root }}{{ category_url }}">{{ category_name }}</a></p>
+    <h1 class="page-title">{{ entry.title }}</h1>
+    <p class="entry-meta muted">
+      <time datetime="{{ entry.date.isoformat() }}">{{ entry.date|date_pt }}</time>
+      {% if entry.meta.status %} · <span class="badge {{ entry.meta.status }}">{{ site.status_labels[entry.meta.status] }}</span>
+      {% else %} · {{ entry.minutes }} min de leitura{% endif %}
+    </p>
+    {% if entry.tags %}<ul class="tags">{% for t in entry.tags %}<li>{{ t }}</li>{% endfor %}</ul>{% endif %}
+    {% if entry.section == "portfolio" %}
+    <p class="project-links">
+      {% if entry.meta.demo %}<a class="btn primary" href="{{ entry.meta.demo }}" target="_blank" rel="noopener noreferrer">Demo</a>{% endif %}
+      {% if entry.meta.repo %}<a class="btn" href="{{ entry.meta.repo }}" target="_blank" rel="noopener noreferrer">Código no GitHub</a>
+      {% else %}<span class="btn off">Repositório a publicar</span>{% endif %}
+    </p>
+    {% endif %}
+    <div class="prose">{{ body|safe }}</div>
+    <nav class="prev-next" aria-label="Outros textos">
+      {% if newer %}<a href="{{ root }}{{ newer.path }}" rel="prev"><span class="muted">← Mais recente</span><br>{{ newer.title }}</a>{% else %}<span></span>{% endif %}
+      {% if older %}<a class="right" href="{{ root }}{{ older.path }}" rel="next"><span class="muted">Mais antigo →</span><br>{{ older.title }}</a>{% endif %}
+    </nav>
+  </article>
+</div>
+{% endblock %}

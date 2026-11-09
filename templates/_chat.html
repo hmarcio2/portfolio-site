@@ -1,0 +1,19 @@
+<button type="button" id="chat-launcher" class="chat-launcher" aria-controls="chat" aria-expanded="false">Perguntar ao assistente</button>
+<aside id="chat" class="chat" role="dialog" aria-label="Assistente do portfólio" hidden>
+  <div class="chat-head">
+    <div>
+      <strong>Assistente do portfólio</strong>
+      <div class="chat-sub">Respostas geradas por IA a partir do currículo e dos projetos. As conversas podem ser registradas para avaliar a qualidade; não envie dados pessoais.</div>
+    </div>
+    <div class="chat-actions">
+      <button type="button" id="new-chat" class="link-btn">Nova conversa</button>
+      <button type="button" id="close-chat" aria-label="Fechar chat">×</button>
+    </div>
+  </div>
+  <div id="chat-log" class="chat-log" role="log" aria-live="polite"></div>
+  <div id="chat-suggestions" class="chat-suggestions"></div>
+  <form id="chat-form" class="chat-form" autocomplete="off">
+    <input id="chat-input" type="text" maxlength="1000" placeholder="Pergunte sobre experiência ou projetos" aria-label="Mensagem" required>
+    <button type="submit" class="btn primary" id="chat-send">Enviar</button>
+  </form>
+</aside>

@@ -1,0 +1,8 @@
+# Desenvolvimento: constrói a imagem e publica a porta 8080.
+#   docker compose -f compose.yml -f compose.local.yml up --build
+services:
+  site:
+    build: .
+    networks: !override [default]
+    ports:
+      - "8080:8080"

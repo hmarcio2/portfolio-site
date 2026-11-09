@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="with-side">
+  {% include "_sidebar.html" %}
+  <article class="main-col prose-wrap">
+    <h1 class="page-title">{{ title }}</h1>
+    <div class="prose">{{ body|safe }}</div>
+  </article>
+</div>
+{% endblock %}

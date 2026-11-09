@@ -1,0 +1,15 @@
+# Este repositório é só o SITE (raiz do workspace). Cada projeto é um repositório próprio:
+# estas pastas têm o seu próprio .git e não entram aqui.
+/00-site-chat/
+/01-recomendador-filmes/
+/02-agente-planilhas/
+/_core/
+/_infra/
+/_langfuse/
+/.venv/
+/.claude/
+.env
+__pycache__/
+*.pyc
+/dist/
+.pytest_cache/

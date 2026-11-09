@@ -1,0 +1,49 @@
+# Configuração do site. O conteúdo (textos) fica em content/home.md, content/curriculo.yml, content/estudos/ e content/portfolio/.
+name: Heriberto Márcio da Silva Júnior
+short_name: Heriberto Márcio
+initials: HM
+description: "Portfólio e estudos de Heriberto Márcio, engenheiro de IA: agentes, RAG, observabilidade e engenharia de dados."
+linkedin: https://www.linkedin.com/in/heribertomarcio/
+github: https://github.com/hmarcio2
+footer_note: "As demos usam um LLM por API e têm limite diário de uso. Arquivos enviados são apagados automaticamente."
+
+nav:
+  - {label: Home, url: index.html, section: home}
+  - {label: Estudos, url: estudos/index.html, section: estudos}
+  - {label: Portfólio, url: portfolio/index.html, section: portfolio}
+
+section_titles:
+  estudos: Estudos
+  portfolio: Portfólio
+section_intro:
+  estudos: "Anotações de estudo em tecnologia: conceitos, resumos de papers e de livros e análises feitas durante os projetos do portfólio."
+  portfolio: "Projetos de engenharia de IA. Cada um tem uma página com a documentação detalhada: arquitetura, decisões, medições e limites."
+side_all:
+  estudos: Todos os estudos
+  portfolio: Todos os projetos
+noun:
+  estudos: [estudo, estudos]
+  portfolio: [projeto, projetos]
+
+# cards por página nas listagens (do mais recente ao mais antigo)
+page_size:
+  estudos: 6
+  portfolio: 6
+
+status_labels:
+  planejado: Planejado
+  em-construcao: Em construção
+  local: Funcional localmente
+  no-ar: No ar
+
+# Categorias (a ordem aqui é a da barra lateral). Categoria sem textos não aparece.
+categories:
+  estudos:
+    - {slug: conceitos, name: Conceitos}
+    - {slug: papers, name: Papers}
+    - {slug: livros, name: Livros}
+    - {slug: analises, name: Análises de projetos}
+  portfolio:
+    - {slug: agentes-rag, name: Agentes e RAG}
+    - {slug: observabilidade, name: Observabilidade}
+    - {slug: plataforma, name: Plataforma e infraestrutura}

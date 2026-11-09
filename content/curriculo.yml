@@ -1,0 +1,36 @@
+# Resumo do currículo mostrado na home. Fonte: currículo em C:\Users\Marcio\Documents\python\Curriculo.
+headline: Engenheiro de IA · João Pessoa, PB
+
+experience:
+  - role: Cientista de Dados e Engenheiro de IA
+    org: Dhauz (consultoria de dados e IA)
+    period: jun/2024 até hoje · remoto
+    summary: >-
+      Agente de IA com RAG no padrão ReAct para um cliente internacional (projeto DSS), da prova de conceito à produção:
+      orquestração de ferramentas, planilhas convertidas em Parquet e consultadas com DuckDB, observabilidade com Langfuse
+      e MLflow, deploy em Azure. Também: visão computacional (YOLO), NLP com embeddings, churn e forecast,
+      pipelines em Databricks e Airflow, segmentação com dados públicos.
+  - role: Professor de programação (tutor)
+    org: Projeto CODE, FUNETEC-PB
+    period: mai/2023 a dez/2024
+    summary: Ensino de lógica de programação a crianças do Ensino Fundamental da rede pública, com planejamento de aulas e avaliações.
+
+education:
+  - course: Engenharia de Computação
+    org: UFPB
+    period: 2018 a 2026
+    note: Ênfase em IA e Machine Learning. TCC sobre biometria palmar com rede neural siamesa.
+
+skills:
+  - group: IA e ML
+    items: [LangChain, Agentes ReAct, RAG, Prompt engineering, LLMs, Scikit-learn, TensorFlow, YOLO, Hugging Face, NLP, XGBoost, MLflow, Langfuse]
+  - group: Dados e cloud
+    items: [Databricks, Airflow, Azure, Alibaba Cloud, ETL/ELT, Pipelines em larga escala]
+  - group: Backend e bancos
+    items: [Python, FastAPI, SQL, MongoDB, Redis, Bancos vetoriais, DuckDB]
+  - group: DevOps
+    items: [Docker, CI/CD, GitHub Actions, Git, Pandas, Dashboards de BI]
+
+languages:
+  - Português (nativo)
+  - Inglês intermediário (TOEFL B1)
